@@ -8,7 +8,7 @@ RUN set -x; \
     && apt-get install -y --no-install-recommends \
       apt-transport-https curl python-software-properties    
 
-RUN curl -sL https://deb.nodesource.com/setup_7.x | sudo bash -	
+RUN curl -sL https://deb.nodesource.com/setup_7.x | bash -	
 	
 RUN echo "deb https://releases.wikimedia.org/debian jessie-mediawiki main" > /etc/apt/sources.list.d/parsoid.list
 
