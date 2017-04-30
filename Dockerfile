@@ -14,7 +14,7 @@ RUN echo "deb https://releases.wikimedia.org/debian jessie-mediawiki main" > /et
 RUN set -x; \
     apt-get update \
     && apt-get install -y --force-yes --no-install-recommends \
-      parsoid  \
+      parsoid nodejs \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /etc/mediawiki/parsoid
