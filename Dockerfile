@@ -26,5 +26,6 @@ VOLUME /data
 EXPOSE 8000 8142
 
 COPY docker-entrypoint.sh /entrypoint.sh
+RUN chmod +x /etnrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["/usr/bin/nodejs", "/usr/lib/parsoid/src/api/server.js"]
