@@ -1,4 +1,4 @@
-FROM node:4
+FROM buildpack-deps:jessie
 
 RUN gpg --keyserver keys.gnupg.net --recv-keys \
     664C383A3566A3481B942F007A322AC6E84AFDD2
@@ -6,9 +6,10 @@ RUN gpg --keyserver keys.gnupg.net --recv-keys \
 RUN set -x; \
     apt-get update \
     && apt-get install -y --no-install-recommends \
-      apt-transport-https \
-    && rm -rf /var/lib/apt/lists/*
+      apt-transport-https curl python-software-properties    
 
+RUN curl -sL https://deb.nodesource.com/setup_7.x | sudo bash -	
+	
 RUN echo "deb https://releases.wikimedia.org/debian jessie-mediawiki main" > /etc/apt/sources.list.d/parsoid.list
 
 RUN set -x; \
