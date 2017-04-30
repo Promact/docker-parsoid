@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:4
 
 RUN gpg --keyserver keys.gnupg.net --recv-keys \
     664C383A3566A3481B942F007A322AC6E84AFDD2
