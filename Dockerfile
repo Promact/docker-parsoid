@@ -1,19 +1,23 @@
-FROM node:latest
+FROM buildpack-deps:jessie
 
-# Install Git
+RUN gpg --keyserver keys.gnupg.net --recv-keys \
+    664C383A3566A3481B942F007A322AC6E84AFDD2
+
+RUN echo "deb https://releases.wikimedia.org/debian jessie-mediawiki main" > /etc/apt/sources.list.d/parsoid.list
+
 RUN set -x; \
     apt-get update \
-    && apt-get install -y --no-install-recommends git \
+    && apt-get install -y --force-yes --no-install-recommends \
+      parsoid apt-transport-https \
     && rm -rf /var/lib/apt/lists/*
 
-RUN git clone -b https://gerrit.wikimedia.org/r/p/mediawiki/services/parsoid \
-  /usr/src/parsoid \
-  && (cd /usr/src/parsoid && npm install)
+WORKDIR /etc/mediawiki/parsoid
 
-WORKDIR /usr/src/parsoid/api
+RUN mkdir -p /data
 
-# generate localsettings.js
-RUN sed "s|'http://localhost/w|process.env.MW_URL + '|" < localsettings.example.js > localsettings.js
+VOLUME /data
+EXPOSE 8000 8142
 
-EXPOSE 8000
-CMD ["node","/usr/src/parsoid/api/server.js"]
+COPY docker-entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["/usr/bin/nodejs", "/usr/lib/parsoid/src/api/server.js"]
